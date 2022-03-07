@@ -1,0 +1,5 @@
+/storage/
+*.json
+*.xml
+.idea
+/__pycache__/
