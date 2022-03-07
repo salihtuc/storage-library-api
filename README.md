@@ -67,7 +67,7 @@ some_dict = {'a': 5, 'b': '4'}
 # Create a sample record
 record = Record('sample', some_dict)
 
-# Call Custom destination
+# Call Custom destination and format
 destination = FileDestination()
 json_format = JsonFormat()
 
@@ -84,5 +84,44 @@ record_from_system = destination.parse(stored_file, json_format)
 print('\nContent:')
 print(record_from_system)
 ```
+
+#### Detailed Explanation
+All process can be separated into a few steps:
+
+* **Preparing key/value data**
+  * Create a `dict` which represents all the key/value pairs.
+* **Preparing Record**
+  * Create a `Record` object with the dict and a name.
+    * Note that the name will be used as storage file name.
+  * Insert/Update/Delete on the `Record` object.
+* **Preparing storage format & destination**
+  * Preparing Storage Format (Supported ones (for now): **_JSON_**, **_XML_**)
+    * Just import the format from `formats`.
+  * Preparing Destination Store (Supported ones (for now): **_File System_**, **_Amazon S3_**)
+    * Just import the store from `destinations`.
+* **Store/parse operation**
+  * From the `destination` object, call the `store`/`parse` methods with appropriate format.
+
+### For Developers
+If you want to register/extend new storage format or destination for this library,
+you can use information under this section.
+
+#### Extending Storage Format
+All the default storage formats are stored under `formats.py` file.
+
+In this file, we have a base abstract class called `Destination`. <br>
+For adding a new storage format, you should just create a **subclass** which inherits `Destination`.
+
+Destination class has two functions that requires to implement: `to_format` and `from_format`.
+
+`def to_format(self, attrs):`<br>
+This function accepts a dictionary as input and converts it to 
+string representation of desired format.
+
+`def from_format(self, formatted: str):`<br>
+This function accepts a formatted string of desired format as input 
+and converts it to a dictionary object.
+
+
 
 <h2>____ _TO BE CONTINUED_ ____<h2>
