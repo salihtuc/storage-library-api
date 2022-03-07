@@ -109,19 +109,35 @@ you can use information under this section.
 #### Extending Storage Format
 All the default storage formats are stored under `formats.py` file.
 
-In this file, we have a base abstract class called `Destination`. <br>
-For adding a new storage format, you should just create a **subclass** which inherits `Destination`.
+In this file, we have a base abstract class called `Format`. <br>
+For adding a new storage format, you should just create a **subclass** which inherits `Format`.
 
-Destination class has two functions that requires to implement: `to_format` and `from_format`.
+`Format` class has two functions that requires to implement: `to_format` and `from_format`.
 
 `def to_format(self, attrs):`<br>
 This function accepts a dictionary as input and converts it to 
-string representation of desired format.
+string representation of desired format. <br>
+It returns a formatted string.
 
 `def from_format(self, formatted: str):`<br>
 This function accepts a formatted string of desired format as input 
-and converts it to a dictionary object.
+and converts it to a dictionary object. <br>
+It returns a dict object.
 
+#### Extending Destination
+All the default destinations are stored under `destinations.py` file. 
 
+In this file, we have a base abstract class called `Destination`. <br>
+For adding a new destination, you should just create a **subclass** which inherits `Destination`.
 
-<h2>____ _TO BE CONTINUED_ ____<h2>
+`Destination` class has two functions that requires to implement: `store` and `parse`.
+
+`def store(self, record: Record, storage_format: Format):`<br>
+This function accepts a `Record` and a `Format` object and stores the `Record`'s content (i.e. attributes, dict)
+into a file in the destination. The file's storage format is the given `Format`. <br>
+It returns the record's name on successful addition. However, this is not required.
+
+`def parse(self, record_name: str, storage_format: Format):`<br>
+This function accepts a record's name and a `Format` object and gets the `Record` with given name and format
+from the destination and returns a `Record` object. <br>
+In other words, it parses the formatted object into Record object.
